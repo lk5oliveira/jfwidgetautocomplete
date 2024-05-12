@@ -5,9 +5,9 @@
     </head>
     <body>
         <div id="main">
-            <h3>Tcity</h3>
+            <h3>userinput</h3>
             <span id="labelText"></span>
-            <input type="text" id="city">
+            <input type="text" id="userInput">
         </div>
         <script type="text/javascript">
             //always subscribe to ready event and implement widget related code
@@ -21,7 +21,7 @@
                         //you should valid attribute to data for JotForm
                         //to be able to use youw widget as required
                         valid: true,
-                        value: document.getElementById('city').value
+                        value: document.getElementById('userInput').value
                     }
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
