@@ -25,7 +25,7 @@
                 document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
-                            document.getElementById('number').value + ", " +
+                    document.getElementById('userInput').value =  document.getElementById('number').value + ", " +
                             document.getElementById('street').value + ", " +
                             document.getElementById('city').value + ", " +
                             document.getElementById('country').value + ", ";
