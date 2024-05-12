@@ -25,7 +25,14 @@
         }
 
         .hidden {
-            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .fade-in {
+            opacity: 1;
+            visibility: visible;
         }
 
     </style>
@@ -33,12 +40,16 @@
 <body>
     <div id="container">
         <input type="text" id="addressInput" placeholder="Enter your address">
-        <label for="street" id="streetLabel" class="hidden">Street:</label>
-        <input type="text" id="street" name="street" class="hidden" readonly>
+        <label for="streetName" id="streetNameLabel" class="hidden">Street Name:</label>
+        <input type="text" id="streetName" name="streetName" class="hidden" readonly>
+        <label for="houseNumber" id="houseNumberLabel" class="hidden">House Number:</label>
+        <input type="text" id="houseNumber" name="houseNumber" class="hidden" readonly>
         <label for="city" id="cityLabel" class="hidden">City:</label>
         <input type="text" id="city" name="city" class="hidden" readonly>
-        <label for="country">Country:</label>
-        <input type="text" id="country" name="country" readonly>
+        <label for="state" id="stateLabel" class="hidden">State:</label>
+        <input type="text" id="state" name="state" class="hidden" readonly>
+        <label for="postalCode" id="postalCodeLabel" class="hidden">Postal Code:</label>
+        <input type="text" id="postalCode" name="postalCode" class="hidden" readonly>
         <input type="hidden" id="userInput" name="userInput">
     </div>
 
@@ -60,30 +71,46 @@
                 }
 
                 // Fill the form fields with the address components
-                document.getElementById('street').value = '';
+                document.getElementById('streetName').value = '';
+                document.getElementById('houseNumber').value = '';
                 document.getElementById('city').value = '';
+                document.getElementById('state').value = '';
+                document.getElementById('postalCode').value = '';
 
                 place.address_components.forEach(function(component) {
                     const types = component.types;
-                    if (types.includes('street_number')) {
-                        document.getElementById('street').value = component.long_name;
-                    } else if (types.includes('route')) {
-                        document.getElementById('street').value += (document.getElementById('street').value ? ' ' : '') + component.long_name;
+                    if (types.includes('route')) {
+                        document.getElementById('streetName').value = component.long_name;
+                    } else if (types.includes('street_number')) {
+                        document.getElementById('houseNumber').value = component.long_name;
                     } else if (types.includes('locality')) {
                         document.getElementById('city').value = component.long_name;
+                    } else if (types.includes('administrative_area_level_1')) {
+                        document.getElementById('state').value = component.long_name;
+                    } else if (types.includes('postal_code')) {
+                        document.getElementById('postalCode').value = component.long_name;
                     }
                 });
 
-                // Show the street and city fields
-                document.getElementById('streetLabel').classList.remove('hidden');
-                document.getElementById('street').classList.remove('hidden');
-                document.getElementById('cityLabel').classList.remove('hidden');
-                document.getElementById('city').classList.remove('hidden');
+                // Show the address fields with fade-in animation
+                document.getElementById('streetNameLabel').classList.add('fade-in');
+                document.getElementById('streetName').classList.add('fade-in');
+                document.getElementById('houseNumberLabel').classList.add('fade-in');
+                document.getElementById('houseNumber').classList.add('fade-in');
+                document.getElementById('cityLabel').classList.add('fade-in');
+                document.getElementById('city').classList.add('fade-in');
+                document.getElementById('stateLabel').classList.add('fade-in');
+                document.getElementById('state').classList.add('fade-in');
+                document.getElementById('postalCodeLabel').classList.add('fade-in');
+                document.getElementById('postalCode').classList.add('fade-in');
 
                 // Concatenate the fields into #userInput
                 const userInput = [
-                    document.getElementById('street').value,
-                    document.getElementById('city').value
+                    document.getElementById('streetName').value,
+                    document.getElementById('houseNumber').value,
+                    document.getElementById('city').value,
+                    document.getElementById('state').value,
+                    document.getElementById('postalCode').value
                 ].filter(value => value.trim() !== '').join(', ');
 
                 document.getElementById('userInput').value = userInput;
