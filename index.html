@@ -4,29 +4,24 @@
         <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
     </head>
     <body>
-        <div id="container">
-            <input type="text" id="addressInput" placeholder="Enter your address">
-            <label for="street">Street:</label>
-            <input type="text" id="street"readonly>
-            <label for="number">Number:</label>
-            <input type="text" id="number" readonly>
-            <label for="city">City:</label>
-            <input type="text" id="city">
-            <label for="country">Country:</label>
-            <input type="text" id="country"readonly>
+        <div id="main">
+            <h3>This is my first widget.</h3>
+            <span id="labelText"></span>
+            <input type="text" id="userInput">
         </div>
         <script type="text/javascript">
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
             JFCustomWidget.subscribe("ready", function(){
-                var label = JFCustomWidget.getWidgetSetting('apiKey');
+                var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
+                document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
                     var msg = {
                         //you should valid attribute to data for JotForm
                         //to be able to use youw widget as required
                         valid: true,
-                        value: document.getElementById('city').value
+                        value: document.getElementById('userInput').value
                     }
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
