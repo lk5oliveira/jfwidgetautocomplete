@@ -152,11 +152,12 @@
                     handleDropdownAppearance();
                 });
 
-                document.addEventListener('click', function(event) {
-                    if(document.querySelectorAll('.fade-in').length == 0) {
+                document.addEventListener('focusout', function(event) {
+                    if (event.target.id !== 'addressInput') {
                         JFCustomWidget.requestFrameResize({ height: parseInt(45) });
                     }
                 });
+
 
                 // Dynamically create the script tag for Google Maps API
                 let script = document.createElement("script");
