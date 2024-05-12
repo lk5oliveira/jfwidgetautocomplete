@@ -7,6 +7,7 @@
         <div id="main">
             <h3>This is my first widget.</h3>
             <span id="labelText"></span>
+            <input type="text" id="city">
             <input type="text" id="userInput">
         </div>
         <script type="text/javascript">
@@ -17,6 +18,7 @@
                 document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
+                    document.getElementById('userInput').value = document.getElementById('city');
                     var msg = {
                         //you should valid attribute to data for JotForm
                         //to be able to use youw widget as required
