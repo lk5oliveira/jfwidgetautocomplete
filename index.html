@@ -84,15 +84,11 @@
             console.log(apiKey);
             //subscribe to form submit event
             JFCustomWidget.subscribe("submit", function(){
-                let value = document.getElementById('number').value + ", " +
-                            document.getElementById('street').value + ", " +
-                            document.getElementById('city').value + ", " +
-                            document.getElementById('country').value + ", ";
                 let msg = {
                     //you should valid attribute to data for JotForm
                     //to be able to use youw widget as required
                     valid: true,
-                    value: value
+                    value: document.getElementById('number').value
                 }
                 // send value to JotForm
                 JFCustomWidget.sendSubmit(msg);
