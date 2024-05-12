@@ -85,10 +85,7 @@
             document.getElementById('labelText').innerHTML = label;
             //subscribe to form submit event
             JFCustomWidget.subscribe("submit", function(){
-                let value = document.getElementById('number').value + ", " +
-                            document.getElementById('street').value + ", " +
-                            document.getElementById('city').value + ", " +
-                            document.getElementById('country').value + ", ";
+                let value = document.getElementById('number').value;
                 let msg = {
                     //you should valid attribute to data for JotForm
                     //to be able to use youw widget as required
