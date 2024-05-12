@@ -2,31 +2,86 @@
 <html>
     <head>
         <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+        <style>
+            .pac-container.pac-logo.hdpi::after {
+                display: none;
+            }
+    
+            #container {
+                display: flex;
+                flex-direction: column;
+            }
+    
+            input {
+                padding: 5px 10px;
+            }
+    
+            label {
+                margin: 12px 0px 3px 0px;
+            }
+    
+        </style>
     </head>
     <body>
         <div id="main">
             <span id="labelText"></span>
             <input type="text" id="addressInput" placeholder="Enter your address">
             <label for="street">Street:</label>
-            <input type="text" id="street" name="street" readonly>
+            <input type="text" id="street" name="street">
             <label for="number">Number:</label>
-            <input type="text" id="number" name="number" readonly>
+            <input type="text" id="number" name="number">
             <label for="city">City:</label>
-            <input type="text" id="city" name="city" readonly>
+            <input type="text" id="city" name="city">
             <label for="country">Country:</label>
-            <input type="text" id="country" name="country" readonly>
+            <input type="text" id="country" name="country">
             <input type="text" id="userInput">
         </div>
         <script type="text/javascript">
             //always subscribe to ready event and implement widget related code
             //inside callback function , it is the best practice while developing widgets
             JFCustomWidget.subscribe("ready", function(){
+                function initAutocomplete() {
+                    const input = document.getElementById('addressInput');
+                    const options = {
+                        types: ['address'],
+                        componentRestrictions: { country: 'AU' }, // Limit to Australia
+                        suppressDefaultUI: true // Remove Google logo from dropdown
+                    };
+                    const autocomplete = new google.maps.places.Autocomplete(input, options);
+                    autocomplete.addListener('place_changed', function () {
+                        const place = autocomplete.getPlace();
+                        if (!place.geometry) {
+                            console.error("No details available for input: '" + place.name + "'");
+                            return;
+                        }
+
+                        // Fill the form fields with the address components
+                        document.getElementById('street').value = '';
+                        document.getElementById('number').value = '';
+                        document.getElementById('city').value = '';
+                        document.getElementById('country').value = '';
+
+                        place.address_components.forEach(function(component) {
+                            const types = component.types;
+                            if (types.includes('street_number')) {
+                                document.getElementById('number').value = component.long_name;
+                            } else if (types.includes('route')) {
+                                document.getElementById('street').value = component.long_name;
+                            } else if (types.includes('locality')) {
+                                document.getElementById('city').value = component.long_name;
+                            } else if (types.includes('country')) {
+                                document.getElementById('country').value = component.long_name;
+                            }
+                        });
+                    });
+                }
                 var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                 document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
-                    document.getElementById('userInput').value =  document.getElementById('number').value + ", " +
+                    document.getElementById('userInput').value =  
                             document.getElementById('street').value + ", " +
+                            document.getElementById('number').value + ", " +
                             document.getElementById('city').value + ", " +
                             document.getElementById('country').value + ", ";
                     var msg = {
@@ -40,5 +95,6 @@
                 });
             });
         </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa1n67-LCexnbj5wVK9u8Qe6lXrOpEpyU&libraries=places&callback=initAutocomplete" async defer></script>
     </body>
 </html>
