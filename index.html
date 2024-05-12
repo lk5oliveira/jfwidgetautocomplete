@@ -137,7 +137,7 @@
                                 let dropDownDisplay = window.getComputedStyle(dropDown).display;
                                 if (dropDownDisplay !== 'none') {
                                     let dropdownHeight = window.getComputedStyle(dropDown).height;
-                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight + 30) });
+                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight + 70) });
                                     // Disconnect the observer once the dropdown appears
                                     observer.disconnect();
                                 } else {
