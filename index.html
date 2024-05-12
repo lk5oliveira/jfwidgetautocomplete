@@ -5,9 +5,16 @@
     </head>
     <body>
         <div id="main">
-            <h3>This is my first widget.</h3>
             <span id="labelText"></span>
-            <input type="text" id="city">
+            <input type="text" id="addressInput" placeholder="Enter your address">
+            <label for="street">Street:</label>
+            <input type="text" id="street" name="street" readonly>
+            <label for="number">Number:</label>
+            <input type="text" id="number" name="number" readonly>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" readonly>
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" readonly>
             <input type="text" id="userInput">
         </div>
         <script type="text/javascript">
@@ -18,7 +25,10 @@
                 document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
-                    document.getElementById('userInput').value = document.getElementById('city');
+                            document.getElementById('number').value + ", " +
+                            document.getElementById('street').value + ", " +
+                            document.getElementById('city').value + ", " +
+                            document.getElementById('country').value + ", ";
                     var msg = {
                         //you should valid attribute to data for JotForm
                         //to be able to use youw widget as required
