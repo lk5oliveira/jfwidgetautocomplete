@@ -124,8 +124,14 @@
                 let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
 
                 document.getElementById('addressInput').addEventListener('input', function() {
-    JFCustomWidget.requestFrameResize({height: 400});
-});
+                    let dropDownDisplay = document.getElementsByClassName('pac-container')[0].style.display;
+
+                    if(dropDownDisplay != 'none') {
+                    let dropdownHeight = document.getElementsByClassName('pac-container')[0].style.height;
+
+                    JFCustomWidget.requestFrameResize({height: parseInt(dropdownHeight + 10)});
+                    }
+                });
 
 
                 // Dynamically create the script tag for Google Maps API
