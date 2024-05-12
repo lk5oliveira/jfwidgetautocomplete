@@ -104,6 +104,7 @@
                 document.getElementById('postalCodeLabel').classList.add('fade-in');
                 document.getElementById('postalCode').classList.add('fade-in');
 
+                JFCustomWidget.requestFrameResize({ height: parseInt(280) });
                 // Concatenate the fields into #userInput
                 const userInput = [
                     document.getElementById('streetName').value,
@@ -137,7 +138,7 @@
                                 let dropDownDisplay = window.getComputedStyle(dropDown).display;
                                 if (dropDownDisplay !== 'none') {
                                     let dropdownHeight = window.getComputedStyle(dropDown).height;
-                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight + 70) });
+                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) + 70 });
                                     // Disconnect the observer once the dropdown appears
                                     observer.disconnect();
                                 } else {
