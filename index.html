@@ -158,6 +158,12 @@
                     }
                 });
 
+                window.addEventListener('blur', function(event) {
+                    console.log('O usuário saiu da janela do navegador.');
+                    // Execute suas ações aqui
+                });
+
+
 
                 // Dynamically create the script tag for Google Maps API
                 let script = document.createElement("script");
