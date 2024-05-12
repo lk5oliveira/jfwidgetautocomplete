@@ -1,32 +1,104 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
-    </head>
-    <body>
-        <div id="main">
-            <h3>This is my first widget.</h3>
-            <span id="labelText"></span>
-            <input type="text" id="userInput">
-        </div>
-        <script type="text/javascript">
-            //always subscribe to ready event and implement widget related code
-            //inside callback function , it is the best practice while developing widgets
-            JFCustomWidget.subscribe("ready", function(){
-                var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
-                document.getElementById('labelText').innerHTML = label;
-                //subscribe to form submit event
-                JFCustomWidget.subscribe("submit", function(){
-                    var msg = {
-                        //you should valid attribute to data for JotForm
-                        //to be able to use youw widget as required
-                        valid: true,
-                        value: document.getElementById('userInput').value
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Search</title>
+    <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+
+    <style>
+        .pac-container.pac-logo.hdpi::after {
+            display: none;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 5px 10px;
+        }
+
+        label {
+            margin: 12px 0px 3px 0px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <input type="text" id="addressInput" placeholder="Enter your address">
+        <label for="street">Street:</label>
+        <input type="text" id="street" name="street" readonly>
+        <label for="number">Number:</label>
+        <input type="text" id="number" name="number" readonly>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" readonly>
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" readonly>
+    </div>
+
+    <script>
+        // Initialize the Google Places API
+        function initAutocomplete() {
+            const input = document.getElementById('addressInput');
+            const options = {
+                types: ['address'],
+                componentRestrictions: { country: 'AU' }, // Limit to Australia
+                suppressDefaultUI: true // Remove Google logo from dropdown
+            };
+            const autocomplete = new google.maps.places.Autocomplete(input, options);
+            autocomplete.addListener('place_changed', function () {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    console.error("No details available for input: '" + place.name + "'");
+                    return;
+                }
+
+                // Fill the form fields with the address components
+                document.getElementById('street').value = '';
+                document.getElementById('number').value = '';
+                document.getElementById('city').value = '';
+                document.getElementById('country').value = '';
+
+                place.address_components.forEach(function(component) {
+                    const types = component.types;
+                    if (types.includes('street_number')) {
+                        document.getElementById('number').value = component.long_name;
+                    } else if (types.includes('route')) {
+                        document.getElementById('street').value = component.long_name;
+                    } else if (types.includes('locality')) {
+                        document.getElementById('city').value = component.long_name;
+                    } else if (types.includes('country')) {
+                        document.getElementById('country').value = component.long_name;
                     }
-                    // send value to JotForm
-                    JFCustomWidget.sendSubmit(msg);
                 });
             });
-        </script>
-    </body>
+        }
+
+        //always subscribe to ready event and implement widget related code
+        //inside callback function , it is the best practice while developing widgets
+        JFCustomWidget.subscribe("ready", function(){
+            let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
+            console.log(apiKey);
+            //subscribe to form submit event
+            JFCustomWidget.subscribe("submit", function(){
+                let value = document.getElementById('number').value + ", " +
+                            document.getElementById('street').value + ", " +
+                            document.getElementById('city').value + ", " +
+                            document.getElementById('country').value + ", ";
+                let msg = {
+                    //you should valid attribute to data for JotForm
+                    //to be able to use youw widget as required
+                    valid: true,
+                    value: value
+                }
+                // send value to JotForm
+                JFCustomWidget.sendSubmit(msg);
+            });
+        });
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa1n67-LCexnbj5wVK9u8Qe6lXrOpEpyU&libraries=places&callback=initAutocomplete" async defer></script>
+</body>
 </html>
