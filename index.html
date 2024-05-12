@@ -156,7 +156,11 @@
                     JFCustomWidget.requestFrameResize({ height: parseInt(45) });
                 });
 
-
+                document.addEventListener('click', function(event) {
+                    if(document.querySelectorAll('.fade-in').length == 0) {
+                        JFCustomWidget.requestFrameResize({ height: parseInt(45) });
+                    }
+                });
 
                 // Dynamically create the script tag for Google Maps API
                 let script = document.createElement("script");
