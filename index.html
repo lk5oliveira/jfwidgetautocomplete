@@ -117,6 +117,11 @@
             });
         }
 
+        document.addEventListener('click', function(event) {
+    console.log('Você clicou no elemento:', event.target);
+});
+
+
         //always subscribe to ready event and implement widget related code
         //inside callback function , it is the best practice while developing widgets
         JFCustomWidget.subscribe("ready", function(){
@@ -132,10 +137,11 @@
                                 let dropDownDisplay = window.getComputedStyle(dropDown).display;
                                 if (dropDownDisplay !== 'none') {
                                     let dropdownHeight = window.getComputedStyle(dropDown).height;
-                                    console.log(dropDownDisplay);
-                                    JFCustomWidget.requestFrameResize({ height: parseInt(230) });
+                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) });
                                     // Disconnect the observer once the dropdown appears
                                     observer.disconnect();
+                                } else {
+                                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
                                 }
                             }
                         });
