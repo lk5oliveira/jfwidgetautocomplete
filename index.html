@@ -29,6 +29,7 @@
 </head>
 <body>
     <div id="container">
+        <h1>test</h1>
         <input type="text" id="addressInput" placeholder="Enter your address">
         <label for="street">Street:</label>
         <input type="text" id="street" name="street" readonly>
@@ -90,7 +91,7 @@
                     //you should valid attribute to data for JotForm
                     //to be able to use youw widget as required
                     valid: true,
-                    value: value
+                    value: "test";
                 }
                 // send value to JotForm
                 JFCustomWidget.sendSubmit(msg);
