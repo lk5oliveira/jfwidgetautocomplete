@@ -123,16 +123,32 @@
                 // Define your API key variable here
                 let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
 
+                // Function to handle dropdown appearance
+                function handleDropdownAppearance() {
+                    let dropDown = document.getElementsByClassName('pac-container')[0];
+                    let observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.attributeName === 'style') {
+                                let dropDownDisplay = window.getComputedStyle(dropDown).display;
+                                if (dropDownDisplay !== 'none') {
+                                    let dropdownHeight = window.getComputedStyle(dropDown).height;
+                                    console.log(dropDownDisplay);
+                                    JFCustomWidget.requestFrameResize({ height: parseInt(230) });
+                                    // Disconnect the observer once the dropdown appears
+                                    observer.disconnect();
+                                }
+                            }
+                        });
+                    });
+                    // Start observing changes to the dropdown
+                    observer.observe(dropDown, { attributes: true });
+                }
+
+                // Add event listener for input on the address field
                 document.getElementById('addressInput').addEventListener('input', function() {
-                    let dropDownDisplay = document.getElementsByClassName('pac-container')[0].style.display;
-
-                    if(dropDownDisplay != 'none') {
-                    let dropdownHeight = document.getElementsByClassName('pac-container')[0].style.height;
-                    console.log(dropDownDisplay);
-                    JFCustomWidget.requestFrameResize({height: parseInt(230)});
-                    }
+                    // Call function to handle dropdown appearance
+                    handleDropdownAppearance();
                 });
-
 
                 // Dynamically create the script tag for Google Maps API
                 let script = document.createElement("script");
