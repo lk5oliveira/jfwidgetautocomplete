@@ -152,15 +152,8 @@
                     handleDropdownAppearance();
                 });
 
-                document.addEventListener('focusout', function(event) {
-                    if (event.target.id !== 'addressInput') {
-                        JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                    }
-                });
-
                 window.addEventListener('blur', function(event) {
-                    console.log('O usuário saiu da janela do navegador.');
-                    // Execute suas ações aqui
+                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
                 });
 
 
