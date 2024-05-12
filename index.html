@@ -27,7 +27,7 @@
         .hidden {
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
         .fade-in {
@@ -65,10 +65,15 @@
             const autocomplete = new google.maps.places.Autocomplete(input, options);
             autocomplete.addListener('place_changed', function () {
                 const place = autocomplete.getPlace();
+                resizeSearch = {height: 220};
+
+                JFCustomWidget.requestFrameResize(resizeSearch);
                 if (!place.geometry) {
                     console.error("No details available for input: '" + place.name + "'");
                     return;
                 }
+
+
 
                 // Fill the form fields with the address components
                 document.getElementById('streetName').value = '';
@@ -92,6 +97,9 @@
                     }
                 });
 
+                resizeForFields = {height: 340};
+
+                JFCustomWidget.requestFrameResize(resizeForFields);
                 // Show the address fields with fade-in animation
                 document.getElementById('streetNameLabel').classList.add('fade-in');
                 document.getElementById('streetName').classList.add('fade-in');
@@ -120,15 +128,7 @@
         //always subscribe to ready event and implement widget related code
         //inside callback function , it is the best practice while developing widgets
         JFCustomWidget.subscribe("ready", function(){
-                // Define your API key variable here
-                let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-
-                // Dynamically create the script tag for Google Maps API
-                let script = document.createElement("script");
-                script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
-                script.async = true;
-                script.defer = true;
-                document.head.appendChild(script);
+            //subscribe to form submit event
             JFCustomWidget.subscribe("submit", function(){
                 let value = document.getElementById('userInput').value;
                 let msg = {
@@ -142,5 +142,6 @@
             });
         });
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa1n67-LCexnbj5wVK9u8Qe6lXrOpEpyU&libraries=places&callback=initAutocomplete" async defer></script>
 </body>
 </html>
