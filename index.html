@@ -123,7 +123,10 @@
                 // Define your API key variable here
                 let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
 
-                JFCustomWidget.requestFrameResize({height: 400})
+                document.getElementById('addressInput').addEventListener('input', function() {
+    JFCustomWidget.requestFrameResize({height: 400});
+});
+
 
                 // Dynamically create the script tag for Google Maps API
                 let script = document.createElement("script");
