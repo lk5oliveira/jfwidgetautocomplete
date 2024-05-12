@@ -118,11 +118,6 @@
             });
         }
 
-        document.addEventListener('click', function(event) {
-    console.log('Você clicou no elemento:', event.target);
-});
-
-
         //always subscribe to ready event and implement widget related code
         //inside callback function , it is the best practice while developing widgets
         JFCustomWidget.subscribe("ready", function(){
@@ -138,7 +133,7 @@
                                 let dropDownDisplay = window.getComputedStyle(dropDown).display;
                                 if (dropDownDisplay !== 'none') {
                                     let dropdownHeight = window.getComputedStyle(dropDown).height;
-                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) + 70 });
+                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) + 60 });
                                     // Disconnect the observer once the dropdown appears
                                     observer.disconnect();
                                 } else {
@@ -155,6 +150,12 @@
                 document.getElementById('addressInput').addEventListener('input', function() {
                     // Call function to handle dropdown appearance
                     handleDropdownAppearance();
+                });
+
+                document.addEventListener('click', function(event) {
+                    if(document.querySelectorAll('.fade-in').length > 0) {
+                        JFCustomWidget.requestFrameResize({ height: parseInt(45) });
+                    }
                 });
 
                 // Dynamically create the script tag for Google Maps API
