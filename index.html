@@ -23,7 +23,7 @@
         </style>
     </head>
     <body>
-        <div id="main">
+        <div id="container">
             <span id="labelText"></span>
             <input type="text" id="addressInput" placeholder="Enter your address">
             <label for="street">Street:</label>
@@ -37,10 +37,7 @@
             <input type="text" id="userInput">
         </div>
         <script type="text/javascript">
-            //always subscribe to ready event and implement widget related code
-            //inside callback function , it is the best practice while developing widgets
-            JFCustomWidget.subscribe("ready", function(){
-                function initAutocomplete() {
+            function initAutocomplete() {
                     const input = document.getElementById('addressInput');
                     const options = {
                         types: ['address'],
@@ -75,6 +72,10 @@
                         });
                     });
                 }
+            //always subscribe to ready event and implement widget related code
+            //inside callback function , it is the best practice while developing widgets
+            JFCustomWidget.subscribe("ready", function(){
+             
                 var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
                 document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
