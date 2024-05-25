@@ -81,6 +81,11 @@
                     return;
                 }
 
+                if (!bounds.contains(place.geometry.location)) {
+                    console.error("Selected place is not within the specified bounds of New South Wales.");
+                    return;
+                }
+
                 // Fill the form fields with the address components
                 document.getElementById('streetName').value = '';
                 document.getElementById('houseNumber').value = '';
