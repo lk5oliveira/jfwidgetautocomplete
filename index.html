@@ -62,7 +62,18 @@
                 componentRestrictions: { country: 'AU' }, // Limit to Australia
                 suppressDefaultUI: true // Remove Google logo from dropdown
             };
+            
             const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            // Defina os limites geográficos aproximados para New South Wales
+            const bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(-37.505, 140.999), // Coordenada sudoeste
+                new google.maps.LatLng(-28.157, 153.638)  // Coordenada nordeste
+            );
+            
+            // Aplique os limites ao Autocomplete
+            autocomplete.setBounds(bounds);
+            
             autocomplete.addListener('place_changed', function () {
                 const place = autocomplete.getPlace();
                 if (!place.geometry) {
