@@ -39,6 +39,20 @@
             visibility: visible;
         }
 
+        .error-border {
+            border: 1px solid red;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -48,6 +62,7 @@
         <input type="text" id="streetName" name="streetName" class="hidden" readonly>
         <label for="houseNumber" id="houseNumberLabel" class="hidden">House Number:</label>
         <input type="text" id="houseNumber" name="houseNumber" class="hidden" readonly>
+        <div id="houseNumberError" class="error-message">House number is required</div>
         <label for="city" id="cityLabel" class="hidden">City:</label>
         <input type="text" id="city" name="city" class="hidden" readonly>
         <label for="state" id="stateLabel" class="hidden">State:</label>
@@ -58,7 +73,7 @@
     </div>
 
     <script>
-// Initialize the Google Places API
+        // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
@@ -140,68 +155,78 @@
                 document.getElementById('userInput').value = userInput;
             });
         }
-        //always subscribe to ready event and implement widget related code
-        //inside callback function , it is the best practice while developing widgets
+
+        // Always subscribe to the ready event and implement widget related code
+        // inside the callback function, it is the best practice while developing widgets
         JFCustomWidget.subscribe("ready", function(){
-                // Define your API key variable here
-                let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
+            // Define your API key variable here
+            let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
 
-                // Function to handle dropdown appearance
-                function handleDropdownAppearance() {
-                    let dropDown = document.getElementsByClassName('pac-container')[0];
-                    let observer = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            if (mutation.attributeName === 'style') {
-                                let dropDownDisplay = window.getComputedStyle(dropDown).display;
-                                if (dropDownDisplay !== 'none') {
-                                    let dropdownHeight = window.getComputedStyle(dropDown).height;
-                                    JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) + 60 });
-                                    // Disconnect the observer once the dropdown appears
-                                    observer.disconnect();
-                                } else {
-                                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                                }
+            // Function to handle dropdown appearance
+            function handleDropdownAppearance() {
+                let dropDown = document.getElementsByClassName('pac-container')[0];
+                let observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.attributeName === 'style') {
+                            let dropDownDisplay = window.getComputedStyle(dropDown).display;
+                            if (dropDownDisplay !== 'none') {
+                                let dropdownHeight = window.getComputedStyle(dropDown).height;
+                                JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) + 60 });
+                                // Disconnect the observer once the dropdown appears
+                                observer.disconnect();
+                            } else {
+                                JFCustomWidget.requestFrameResize({ height: parseInt(45) });
                             }
-                        });
+                        }
                     });
-                    // Start observing changes to the dropdown
-                    observer.observe(dropDown, { attributes: true });
+                });
+                // Start observing changes to the dropdown
+                observer.observe(dropDown, { attributes: true });
+            }
+
+            // Add event listener for input on the address field
+            document.getElementById('addressInput').addEventListener('input', function() {
+                // Call function to handle dropdown appearance
+                handleDropdownAppearance();
+            });
+
+            window.addEventListener('blur', function(event) {
+                if(document.querySelectorAll('.fade-in').length == 0) {
+                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
                 }
+            });
 
-                // Add event listener for input on the address field
-                document.getElementById('addressInput').addEventListener('input', function() {
-                    // Call function to handle dropdown appearance
-                    handleDropdownAppearance();
-                });
+            document.addEventListener('click', function(event) {
+                if(document.querySelectorAll('.fade-in').length == 0) {
+                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
+                }
+            });
 
-                window.addEventListener('blur', function(event) {
-                    if(document.querySelectorAll('.fade-in').length == 0) {
-                        JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                    }
-                });
-
-                document.addEventListener('click', function(event) {
-                    if(document.querySelectorAll('.fade-in').length == 0) {
-                        JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                    }
-                });
-
-                // Dynamically create the script tag for Google Maps API
-                let script = document.createElement("script");
-                script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
-                script.async = true;
-                script.defer = true;
-                document.head.appendChild(script);
+            // Dynamically create the script tag for Google Maps API
+            let script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+            
             JFCustomWidget.subscribe("submit", function(){
-                let value = document.getElementById('userInput').value;
-                let msg = {
-                    //you should valid attribute to data for JotForm
-                    //to be able to use your widget as required
-                    valid: true,
-                    value: value
+                let houseNumber = document.getElementById('houseNumber').value;
+                if (!houseNumber) {
+                    document.getElementById('houseNumber').classList.add('error-border');
+                    document.getElementById('houseNumberError').classList.add('show');
+                    JFCustomWidget.sendSubmit({
+                        valid: false,
+                        value: null
+                    });
+                } else {
+                    let value = document.getElementById('userInput').value;
+                    let msg = {
+                        valid: true,
+                        value: value
+                    };
+                    // send value to JotForm
+                    JFCustomWidget.sendSubmit(msg);
                 }
-                // send value to JotForm
-                JFCustomWidget.sendSubmit(msg);
             });
         });
     </script>
