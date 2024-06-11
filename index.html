@@ -146,17 +146,7 @@
                 document.getElementById('postalCode').classList.add('fade-in');
         
                 JFCustomWidget.requestFrameResize({ height: 415 });
-        
-                // Concatenate the fields into #userInput
-                const userInput = [
-                    document.getElementById('streetName').value,
-                    document.getElementById('houseNumber').value,
-                    document.getElementById('city').value,
-                    document.getElementById('state').value,
-                    document.getElementById('postalCode').value
-                ].filter(value => value.trim() !== '').join(', ');
-        
-                document.getElementById('userInput').value = userInput;
+    
             });
         }
 
@@ -223,6 +213,16 @@
                         value: null
                     });
                 } else {
+                    // Concatenate the fields into #userInput
+                    const userInput = [
+                        document.getElementById('streetName').value,
+                        document.getElementById('houseNumber').value,
+                        document.getElementById('city').value,
+                        document.getElementById('state').value,
+                        document.getElementById('postalCode').value
+                    ].filter(value => value.trim() !== '').join(', ');
+            
+                    document.getElementById('userInput').value = userInput;
                     let value = document.getElementById('userInput').value;
                     let msg = {
                         valid: true,
