@@ -221,7 +221,9 @@
                         document.getElementById('state').value,
                         document.getElementById('postalCode').value
                     ].filter(value => value.trim() !== '').join(', ');
-            
+
+                    console.log(userInput);
+                    console.log(document.getElementById('houseNumber').value);
                     document.getElementById('userInput').value = userInput;
                     let value = document.getElementById('userInput').value;
                     let msg = {
