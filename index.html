@@ -219,6 +219,7 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
+                console.log(value)
                 let houseNumber = document.getElementById('houseNumber').value;
                 if (!houseNumber) {
                     document.getElementById('houseNumber').classList.add('error-border');
@@ -229,10 +230,12 @@
                     });
                 } else {
                     let value = document.getElementById('userInput').value;
+                    console.log(value);
                     let msg = {
                         valid: true,
                         value: value
                     };
+                    console.log(msg);
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
                 }
