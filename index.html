@@ -219,9 +219,10 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                console.log(value)
+                
                 let houseNumber = document.getElementById('houseNumber').value;
                 if (!houseNumber) {
+                    console.log('no house number');
                     document.getElementById('houseNumber').classList.add('error-border');
                     document.getElementById('houseNumberError').classList.add('show');
                     JFCustomWidget.sendSubmit({
