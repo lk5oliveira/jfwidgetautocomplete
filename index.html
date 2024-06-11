@@ -220,7 +220,7 @@
                         document.getElementById('city').value,
                         document.getElementById('state').value,
                         document.getElementById('postalCode').value
-                    ].filter(value => value.trim() !== '').join(', ');
+                    ].map(value => value.trim() === '' ? ' ' : value.trim()).join(', ');
 
                     console.log(userInput);
                     console.log(document.getElementById('houseNumber').value);
