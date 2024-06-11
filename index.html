@@ -239,6 +239,7 @@
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
                 } else {
+                    console.log('not valid');
                     JFCustomWidget.sendSubmit({
                         valid: false,
                         value: null
