@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Address Search</title>
-    <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
-    <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDa1n67-LCexnbj5wVK9u8Qe6lXrOpEpyU&loading=async&callback=initMap">
-    </script>
+    <script src="//js.jotform.com/JotFormCustomWidget.min.js" async></script>
 
     <style>
         .pac-container::after {
@@ -231,7 +228,11 @@
             });
 
             // Dynamically create the script tag for Google Maps API
-
+            let script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete&loading=async";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
                 console.log("Form submitted");
