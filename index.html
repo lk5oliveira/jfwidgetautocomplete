@@ -74,7 +74,7 @@
 
     <script>
         // Initialize the Google Places API
-       /* function initAutocomplete() {
+        function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
                 types: ['address'],
@@ -96,6 +96,7 @@
         
             autocomplete.addListener('place_changed', function () {
                 const place = autocomplete.getPlace();
+                console.log("Place changed:", place);
                 if (!place.geometry) {
                     console.error("No details available for input: '" + place.name + "'");
                     return;
@@ -144,8 +145,9 @@
                 JFCustomWidget.requestFrameResize({ height: 415 });
         
                 updateUserInput();
+                console.log("Updated user input:", document.getElementById('userInput').value);
             });
-        }*/
+        }
 
         function updateUserInput() {
             const userInput = [
@@ -157,6 +159,7 @@
             ].filter(value => value.trim() !== '').join(', ');
 
             document.getElementById('userInput').value = userInput;
+            console.log("User input updated:", userInput);
         }
 
         function validateForm() {
@@ -164,20 +167,22 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
+                console.log("Validation failed: House number is required");
                 return false;
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
                 document.getElementById('houseNumberError').classList.remove('show');
+                console.log("Validation passed");
                 return true;
             }
         }
 
         // Always subscribe to the ready event and implement widget related code
         // inside the callback function, it is the best practice while developing widgets
-        JFCustomWidget.subscribe("ready", function(msg){
+        JFCustomWidget.subscribe("ready", function(){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-            console.log(msg);
+
             // Function to handle dropdown appearance
             function handleDropdownAppearance() {
                 let dropDown = document.getElementsByClassName('pac-container')[0];
@@ -226,17 +231,41 @@
             let script = document.createElement("script");
             script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
             script.async = true;
+            script.defer = true;
             document.head.appendChild(script);
             
-            JFCustomWidget.subscribe("submit", function(msgs){
-                console.log(msgs);
-                let addressValue = document.getElementById('userInput').value;
-                let msg = {
-                    valid: true,
-                    value: 'test'
-                };
-                console.log('value: ' +  msg.value);
-                JFCustomWidget.sendSubmit(msg);
+            JFCustomWidget.subscribe("submit", function(){
+                console.log("Form submitted");
+                updateUserInput();
+                console.log("User Input:", document.getElementById('userInput').value);
+                if (validateForm()) {
+                    let value = document.getElementById('userInput').value;
+                    let msg = {
+                        valid: true,
+                        value: value
+                    };
+                    console.log("Sending submit:", msg);
+                    JFCustomWidget.sendSubmit(msg);
+                } else {
+                    setTimeout(function() {
+                        console.log("Revalidating form after delay");
+                        if (validateForm()) {
+                            let value = document.getElementById('userInput').value;
+                            let msg = {
+                                valid: true,
+                                value: value
+                            };
+                            console.log("Resending submit:", msg);
+                            JFCustomWidget.sendSubmit(msg);
+                        } else {
+                            console.log("Validation failed again");
+                            JFCustomWidget.sendSubmit({
+                                valid: false,
+                                value: null
+                            });
+                        }
+                    }, 100); // Add a short delay before revalidation and submission
+                }
             });
         });
     </script>
