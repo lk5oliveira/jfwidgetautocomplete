@@ -73,7 +73,6 @@
     </div>
 
     <script>
-         JFCustomWidget.subscribe("ready", function(){
         // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -238,7 +237,7 @@
                         value: value
                     };
                     // send value to JotForm
-                    JFCustomWidget.sendSubmit(msg);
+                    JFCustomWidget.sendResult(msg);
                 } else {
                     JFCustomWidget.sendSubmit({
                         valid: false,
