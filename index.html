@@ -73,6 +73,13 @@
     </div>
 
     <script>
+            // Dynamically create the script tag for Google Maps API
+            let script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+
         // Always subscribe to the ready event and implement widget related code
         // inside the callback function, it is the best practice while developing widgets
         JFCustomWidget.subscribe("ready", function(){
@@ -221,12 +228,7 @@
                 }
             });
 
-            // Dynamically create the script tag for Google Maps API
-            let script = document.createElement("script");
-            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
-            script.async = true;
-            script.defer = true;
-            document.head.appendChild(script);
+
             
             JFCustomWidget.subscribe("submit", function(){
                 console.log(value);
