@@ -239,9 +239,13 @@
                         valid: true,
                         value: document.getElementById('userInput').value
                     }
+                    console.log(msg.valid);
+
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
+                    console.log(JFCustomWidget.sendSubmit(msg));
                     submit.value = document.getElementById('userInput').value;
+                    console.log(submit);
                     JFCustomWidget.sendSubmit(submit);
             });
         });
