@@ -147,6 +147,8 @@
             });
         }
 
+        let value = document.getElementById('userInput').value;
+
         function updateUserInput() {
             const userInput = [
                 document.getElementById('streetName').value,
@@ -158,8 +160,7 @@
 
             if (validateForm()) {
                 console.log('validated');
-                let value = document.getElementById('userInput').value;
-                document.getElementById('userInput').value = userInput;
+                value = userInput;
                 console.log(value);
                 }
         }
@@ -182,7 +183,7 @@
         JFCustomWidget.subscribe("ready", function(){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-
+            
             // Function to handle dropdown appearance
             function handleDropdownAppearance() {
                 let dropDown = document.getElementsByClassName('pac-container')[0];
