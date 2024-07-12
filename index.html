@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Address Search</title>
-    <script src="//js.jotform.com/JotFormCustomWidget.min.js" async></script>
+    <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
 
     <style>
         .pac-container::after {
@@ -73,6 +73,9 @@
     </div>
 
     <script>
+        let autocomplete;
+        let placeChangedListener;
+
         // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -81,72 +84,74 @@
                 componentRestrictions: { country: 'AU' }, // Limit to Australia
                 suppressDefaultUI: true // Remove Google logo from dropdown
             };
-        
-            const autocomplete = new google.maps.places.Autocomplete(input, options);
-        
+
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+
             // Define the geographical bounds for New South Wales
             const bounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(-37.505, 140.999), // Southwest coordinate
                 new google.maps.LatLng(-28.157, 153.638)  // Northeast coordinate
             );
-        
+
             // Apply the bounds to the Autocomplete
             autocomplete.setBounds(bounds);
             autocomplete.setOptions({ strictBounds: true });
-        
-            autocomplete.addListener('place_changed', function () {
-                const place = autocomplete.getPlace();
-                console.log("Place changed:", place);
-                if (!place.geometry) {
-                    console.error("No details available for input: '" + place.name + "'");
-                    return;
+
+            placeChangedListener = autocomplete.addListener('place_changed', onPlaceChanged);
+        }
+
+        function onPlaceChanged() {
+            const place = autocomplete.getPlace();
+            console.log("Place changed:", place);
+            if (!place.geometry) {
+                console.error("No details available for input: '" + place.name + "'");
+                return;
+            }
+
+            if (!bounds.contains(place.geometry.location)) {
+                console.error("Selected place is not within the specified bounds of New South Wales.");
+                return;
+            }
+
+            // Clear the form fields
+            document.getElementById('streetName').value = '';
+            document.getElementById('houseNumber').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('state').value = '';
+            document.getElementById('postalCode').value = '';
+
+            // Fill the form fields with the address components
+            place.address_components.forEach(function (component) {
+                const types = component.types;
+                if (types.includes('route')) {
+                    document.getElementById('streetName').value = component.long_name;
+                } else if (types.includes('street_number')) {
+                    document.getElementById('houseNumber').value = component.long_name;
+                } else if (types.includes('locality') || types.includes('sublocality') || types.includes('neighborhood')) {
+                    document.getElementById('city').value = component.long_name;
+                } else if (types.includes('administrative_area_level_1')) {
+                    document.getElementById('state').value = component.long_name;
+                } else if (types.includes('postal_code')) {
+                    document.getElementById('postalCode').value = component.long_name;
                 }
-        
-                if (!bounds.contains(place.geometry.location)) {
-                    console.error("Selected place is not within the specified bounds of New South Wales.");
-                    return;
-                }
-        
-                // Clear the form fields
-                document.getElementById('streetName').value = '';
-                document.getElementById('houseNumber').value = '';
-                document.getElementById('city').value = '';
-                document.getElementById('state').value = '';
-                document.getElementById('postalCode').value = '';
-        
-                // Fill the form fields with the address components
-                place.address_components.forEach(function (component) {
-                    const types = component.types;
-                    if (types.includes('route')) {
-                        document.getElementById('streetName').value = component.long_name;
-                    } else if (types.includes('street_number')) {
-                        document.getElementById('houseNumber').value = component.long_name;
-                    } else if (types.includes('locality') || types.includes('sublocality') || types.includes('neighborhood')) {
-                        document.getElementById('city').value = component.long_name;
-                    } else if (types.includes('administrative_area_level_1')) {
-                        document.getElementById('state').value = component.long_name;
-                    } else if (types.includes('postal_code')) {
-                        document.getElementById('postalCode').value = component.long_name;
-                    }
-                });
-        
-                // Show the address fields with fade-in animation
-                document.getElementById('streetNameLabel').classList.add('fade-in');
-                document.getElementById('streetName').classList.add('fade-in');
-                document.getElementById('houseNumberLabel').classList.add('fade-in');
-                document.getElementById('houseNumber').classList.add('fade-in');
-                document.getElementById('cityLabel').classList.add('fade-in');
-                document.getElementById('city').classList.add('fade-in');
-                document.getElementById('stateLabel').classList.add('fade-in');
-                document.getElementById('state').classList.add('fade-in');
-                document.getElementById('postalCodeLabel').classList.add('fade-in');
-                document.getElementById('postalCode').classList.add('fade-in');
-        
-                JFCustomWidget.requestFrameResize({ height: 415 });
-        
-                updateUserInput();
-                console.log("Updated user input:", document.getElementById('userInput').value);
             });
+
+            // Show the address fields with fade-in animation
+            document.getElementById('streetNameLabel').classList.add('fade-in');
+            document.getElementById('streetName').classList.add('fade-in');
+            document.getElementById('houseNumberLabel').classList.add('fade-in');
+            document.getElementById('houseNumber').classList.add('fade-in');
+            document.getElementById('cityLabel').classList.add('fade-in');
+            document.getElementById('city').classList.add('fade-in');
+            document.getElementById('stateLabel').classList.add('fade-in');
+            document.getElementById('state').classList.add('fade-in');
+            document.getElementById('postalCodeLabel').classList.add('fade-in');
+            document.getElementById('postalCode').classList.add('fade-in');
+
+            JFCustomWidget.requestFrameResize({ height: 415 });
+
+            updateUserInput();
+            console.log("Updated user input:", document.getElementById('userInput').value);
         }
 
         function updateUserInput() {
@@ -174,6 +179,26 @@
                 document.getElementById('houseNumberError').classList.remove('show');
                 console.log("Validation passed");
                 return true;
+            }
+        }
+
+        function handleSubmit() {
+            updateUserInput();
+            console.log("User Input:", document.getElementById('userInput').value);
+            if (validateForm()) {
+                let value = document.getElementById('userInput').value;
+                let msg = {
+                    valid: true,
+                    value: value
+                };
+                console.log("Sending submit:", msg);
+                JFCustomWidget.sendSubmit(msg);
+            } else {
+                console.log("Validation failed");
+                JFCustomWidget.sendSubmit({
+                    valid: false,
+                    value: null
+                });
             }
         }
 
@@ -229,43 +254,22 @@
 
             // Dynamically create the script tag for Google Maps API
             let script = document.createElement("script");
-            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete&loading=async";
+            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
                 console.log("Form submitted");
-                updateUserInput();
-                console.log("User Input:", document.getElementById('userInput').value);
-                if (validateForm()) {
-                    let value = document.getElementById('userInput').value;
-                    let msg = {
-                        valid: true,
-                        value: value
-                    };
-                    console.log("Sending submit:", msg);
-                    JFCustomWidget.sendSubmit(msg);
-                } else {
-                    setTimeout(function() {
-                        console.log("Revalidating form after delay");
-                        if (validateForm()) {
-                            let value = document.getElementById('userInput').value;
-                            let msg = {
-                                valid: true,
-                                value: value
-                            };
-                            console.log("Resending submit:", msg);
-                            JFCustomWidget.sendSubmit(msg);
-                        } else {
-                            console.log("Validation failed again");
-                            JFCustomWidget.sendSubmit({
-                                valid: false,
-                                value: null
-                            });
-                        }
-                    }, 100); // Add a short delay before revalidation and submission
+                if (placeChangedListener) {
+                    google.maps.event.removeListener(placeChangedListener);
+                    console.log("Place changed listener removed");
                 }
+                handleSubmit();
+                // Add a delay and revalidate
+                setTimeout(function() {
+                    handleSubmit();
+                }, 100);
             });
         });
     </script>
