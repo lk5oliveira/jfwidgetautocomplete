@@ -232,12 +232,17 @@
             script.async = true;
             document.head.appendChild(script);
             
-            JFCustomWidget.subscribe("submit", function(msgs){
-                console.log(msgs);
-                let addressValue = document.getElementById('userInput').value;
-                submit.value = addressValue;
-                console.log(submit.valid);
-                JFCustomWidget.sendSubmit(submit);
+            JFCustomWidget.subscribe("submit", function(){
+                    var msg = {
+                        //you should valid attribute to data for JotForm
+                        //to be able to use youw widget as required
+                        valid: true,
+                        value: document.getElementById('userInput').value
+                    }
+                    // send value to JotForm
+                    JFCustomWidget.sendSubmit(msg);
+                    submit.value = document.getElementById('userInput').value;
+                    JFCustomWidget.sendSubmit(submit);
             });
         });
     </script>
