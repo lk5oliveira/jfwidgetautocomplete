@@ -73,6 +73,7 @@
     </div>
 
     <script>
+         JFCustomWidget.subscribe("ready", function(){
         // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -174,7 +175,7 @@
 
         // Always subscribe to the ready event and implement widget related code
         // inside the callback function, it is the best practice while developing widgets
-        JFCustomWidget.subscribe("ready", function(){
+       
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
 
@@ -224,15 +225,12 @@
 
             // Dynamically create the script tag for Google Maps API
             let script = document.createElement("script");
-            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
+            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete&loading=async";
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                // Ensure the user input is updated before validation
-                updateUserInput();
-
                 if (validateForm()) {
                     let value = document.getElementById('userInput').value;
                     let msg = {
@@ -240,15 +238,7 @@
                         value: value
                     };
                     // send value to JotForm
-                    console.log(value);
                     JFCustomWidget.sendSubmit(msg);
-                    
-                    // Add a delay and re-send the submit
-                    setTimeout(function() {
-                        console.log(value);
-                        console.log(JFCustomWidget.sendSubmit(msg));
-                        JFCustomWidget.sendSubmit(msg);
-                    }, 1000);
                 } else {
                     JFCustomWidget.sendSubmit({
                         valid: false,
