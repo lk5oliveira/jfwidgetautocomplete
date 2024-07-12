@@ -222,13 +222,10 @@
                 }
             });
 
-            let msg = {
-                valid: true,
-                value: 'test'
-            };
+            let submit = {}
+            submit.valid = true;
+            
 
-
-            JFCustomWidget.sendSubmit(msg);
             // Dynamically create the script tag for Google Maps API
             let script = document.createElement("script");
             script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
@@ -238,8 +235,9 @@
             JFCustomWidget.subscribe("submit", function(msgs){
                 console.log(msgs);
                 let addressValue = document.getElementById('userInput').value;
-                console.log('value: ' +  msg.valid);
-                JFCustomWidget.sendSubmit(msg);
+                submit.value = addressValue;
+                console.log(submit.valid);
+                JFCustomWidget.sendSubmit(submit);
             });
         });
     </script>
