@@ -7,10 +7,6 @@
     <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
 
     <style>
-        body {
-            margin: 0px;
-        }
-
         .pac-container::after {
             display: none !important;
         }
@@ -65,9 +61,9 @@
         <label for="streetName" id="streetNameLabel" class="hidden">Street Name:</label>
         <input type="text" id="streetName" name="streetName" class="hidden" readonly>
         <label for="houseNumber" id="houseNumberLabel" class="hidden">House Number:</label>
-        <input type="text" id="houseNumber" name="houseNumber" class="hidden">
+        <input type="text" id="houseNumber" name="houseNumber" class="hidden" readonly>
         <div id="houseNumberError" class="error-message">House number is required</div>
-        <label for="city" id="cityLabel" class="hidden" readonly>City:</label>
+        <label for="city" id="cityLabel" class="hidden">City:</label>
         <input type="text" id="city" name="city" class="hidden" readonly>
         <label for="state" id="stateLabel" class="hidden">State:</label>
         <input type="text" id="state" name="state" class="hidden" readonly>
@@ -147,17 +143,33 @@
         
                 JFCustomWidget.requestFrameResize({ height: 415 });
         
-                // Concatenate the fields into #userInput
-                const userInput = [
-                    document.getElementById('streetName').value,
-                    document.getElementById('houseNumber').value,
-                    document.getElementById('city').value,
-                    document.getElementById('state').value,
-                    document.getElementById('postalCode').value
-                ].filter(value => value.trim() !== '').join(', ');
-        
-                document.getElementById('userInput').value = userInput;
+                updateUserInput();
             });
+        }
+
+        function updateUserInput() {
+            const userInput = [
+                document.getElementById('streetName').value,
+                document.getElementById('houseNumber').value,
+                document.getElementById('city').value,
+                document.getElementById('state').value,
+                document.getElementById('postalCode').value
+            ].filter(value => value.trim() !== '').join(', ');
+
+            document.getElementById('userInput').value = userInput;
+        }
+
+        function validateForm() {
+            let houseNumber = document.getElementById('houseNumber').value;
+            if (!houseNumber) {
+                document.getElementById('houseNumber').classList.add('error-border');
+                document.getElementById('houseNumberError').classList.add('show');
+                return false;
+            } else {
+                document.getElementById('houseNumber').classList.remove('error-border');
+                document.getElementById('houseNumberError').classList.remove('show');
+                return true;
+            }
         }
 
         // Always subscribe to the ready event and implement widget related code
@@ -165,89 +177,6 @@
         JFCustomWidget.subscribe("ready", function(){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-
-                    // Initialize the Google Places API
-        function initAutocomplete() {
-            const input = document.getElementById('addressInput');
-            const options = {
-                types: ['address'],
-                componentRestrictions: { country: 'AU' }, // Limit to Australia
-                suppressDefaultUI: true // Remove Google logo from dropdown
-            };
-        
-            const autocomplete = new google.maps.places.Autocomplete(input, options);
-        
-            // Define the geographical bounds for New South Wales
-            const bounds = new google.maps.LatLngBounds(
-                new google.maps.LatLng(-37.505, 140.999), // Southwest coordinate
-                new google.maps.LatLng(-28.157, 153.638)  // Northeast coordinate
-            );
-        
-            // Apply the bounds to the Autocomplete
-            autocomplete.setBounds(bounds);
-            autocomplete.setOptions({ strictBounds: true });
-        
-            autocomplete.addListener('place_changed', function () {
-                const place = autocomplete.getPlace();
-                if (!place.geometry) {
-                    console.error("No details available for input: '" + place.name + "'");
-                    return;
-                }
-        
-                if (!bounds.contains(place.geometry.location)) {
-                    console.error("Selected place is not within the specified bounds of New South Wales.");
-                    return;
-                }
-        
-                // Clear the form fields
-                document.getElementById('streetName').value = '';
-                document.getElementById('houseNumber').value = '';
-                document.getElementById('city').value = '';
-                document.getElementById('state').value = '';
-                document.getElementById('postalCode').value = '';
-        
-                // Fill the form fields with the address components
-                place.address_components.forEach(function (component) {
-                    const types = component.types;
-                    if (types.includes('route')) {
-                        document.getElementById('streetName').value = component.long_name;
-                    } else if (types.includes('street_number')) {
-                        document.getElementById('houseNumber').value = component.long_name;
-                    } else if (types.includes('locality') || types.includes('sublocality') || types.includes('neighborhood')) {
-                        document.getElementById('city').value = component.long_name;
-                    } else if (types.includes('administrative_area_level_1')) {
-                        document.getElementById('state').value = component.long_name;
-                    } else if (types.includes('postal_code')) {
-                        document.getElementById('postalCode').value = component.long_name;
-                    }
-                });
-        
-                // Show the address fields with fade-in animation
-                document.getElementById('streetNameLabel').classList.add('fade-in');
-                document.getElementById('streetName').classList.add('fade-in');
-                document.getElementById('houseNumberLabel').classList.add('fade-in');
-                document.getElementById('houseNumber').classList.add('fade-in');
-                document.getElementById('cityLabel').classList.add('fade-in');
-                document.getElementById('city').classList.add('fade-in');
-                document.getElementById('stateLabel').classList.add('fade-in');
-                document.getElementById('state').classList.add('fade-in');
-                document.getElementById('postalCodeLabel').classList.add('fade-in');
-                document.getElementById('postalCode').classList.add('fade-in');
-        
-                JFCustomWidget.requestFrameResize({ height: 415 });
-        
-                // Concatenate the fields into #userInput
-                const userInput = [
-                    document.getElementById('streetName').value,
-                    document.getElementById('houseNumber').value,
-                    document.getElementById('city').value,
-                    document.getElementById('state').value,
-                    document.getElementById('postalCode').value
-                ].filter(value => value.trim() !== '').join(', ');
-        
-                document.getElementById('userInput').value = userInput;
-            });
-        }
 
             // Function to handle dropdown appearance
             function handleDropdownAppearance() {
@@ -277,6 +206,10 @@
                 handleDropdownAppearance();
             });
 
+            document.getElementById('houseNumber').addEventListener('input', function() {
+                updateUserInput();
+            });
+
             window.addEventListener('blur', function(event) {
                 if(document.querySelectorAll('.fade-in').length == 0) {
                     JFCustomWidget.requestFrameResize({ height: parseInt(45) });
@@ -297,23 +230,25 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                let houseNumber = document.getElementById('houseNumber').value;
-                if (!houseNumber) {
-                    document.getElementById('houseNumber').classList.add('error-border');
-                    document.getElementById('houseNumberError').classList.add('show');
-                    JFCustomWidget.sendSubmit({
-                        valid: false,
-                        value: null
-                    });
-                } else {
-                    let value = document.getElementById('userInput').value;
-                    let msg = {
-                        valid: true,
-                        value: value
-                    };
-                    // send value to JotForm
-                    JFCustomWidget.sendSubmit(msg);
-                }
+                // Ensure the user input is updated before validation
+                updateUserInput();
+
+                setTimeout(function() {
+                    if (validateForm()) {
+                        let value = document.getElementById('userInput').value;
+                        let msg = {
+                            valid: true,
+                            value: value
+                        };
+                        // send value to JotForm
+                        JFCustomWidget.sendSubmit(msg);
+                    } else {
+                        JFCustomWidget.sendSubmit({
+                            valid: false,
+                            value: null
+                        });
+                    }
+                }, 100); // Add a short delay before validation to ensure all fields are updated
             });
         });
     </script>
