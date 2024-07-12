@@ -73,79 +73,21 @@
     </div>
 
     <script>
-        
-        // Always subscribe to the ready event and implement widget related code
-        // inside the callback function, it is the best practice while developing widgets
-        JFCustomWidget.subscribe("ready", function(response){
-            // Define your API key variable here
-            let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-            console.log(response);
-            // Function to handle dropdown appearance
-            /*function handleDropdownAppearance() {
-                let dropDown = document.getElementsByClassName('pac-container')[0];
-                let observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.attributeName === 'style') {
-                            let dropDownDisplay = window.getComputedStyle(dropDown).display;
-                            if (dropDownDisplay !== 'none') {
-                                let dropdownHeight = window.getComputedStyle(dropDown).height;
-                                JFCustomWidget.requestFrameResize({ height: parseInt(dropdownHeight) + 60 });
-                                // Disconnect the observer once the dropdown appears
-                                observer.disconnect();
-                            } else {
-                                JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                            }
-                        }
-                    });
-                });
-                // Start observing changes to the dropdown
-                observer.observe(dropDown, { attributes: true });
-            }
-
-            // Add event listener for input on the address field
-            document.getElementById('addressInput').addEventListener('input', function() {
-                // Call function to handle dropdown appearance
-                handleDropdownAppearance();
-            });*/
-
-           /* document.getElementById('houseNumber').addEventListener('input', function() {
-                updateUserInput();
-            });
-
-            window.addEventListener('blur', function(event) {
-                if(document.querySelectorAll('.fade-in').length == 0) {
-                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                }
-            });
-
-            document.addEventListener('click', function(event) {
-                if(document.querySelectorAll('.fade-in').length == 0) {
-                    JFCustomWidget.requestFrameResize({ height: parseInt(45) });
-                }
-            });
-
-            let submit = {}
-            submit.valid = true;*/
-            
-            // Dynamically create the script tag for Google Maps API
-            /*let script = document.createElement("script");
-            script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
-            script.async = true;
-            document.head.appendChild(script);*/
-            
-            JFCustomWidget.subscribe("submit", function(){
+        JFCustomWidget.subscribe("ready", function(){
+                var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
+                document.getElementById('labelText').innerHTML = label;
+                //subscribe to form submit event
+                JFCustomWidget.subscribe("submit", function(){
                     var msg = {
                         //you should valid attribute to data for JotForm
                         //to be able to use youw widget as required
                         valid: true,
-                        value: 'value'
+                        value: document.getElementById('userInput').value
                     }
-                    console.log(msg.valid);
-
                     // send value to JotForm
                     JFCustomWidget.sendSubmit(msg);
+                });
             });
-        });
     </script>
 </body>
 </html>
