@@ -231,6 +231,7 @@
             
             JFCustomWidget.subscribe("submit", function(){
                 if (validateForm()) {
+                    console.log('valid');
                     let value = document.getElementById('userInput').value;
                     let msg = {
                         valid: true,
