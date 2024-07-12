@@ -73,6 +73,7 @@
     </div>
 
     <script>
+        let msg = {};
         // Initialize the Google Places API
        function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -161,13 +162,20 @@
 
         function validateForm() {
             let houseNumber = document.getElementById('houseNumber').value;
+            let adressValue = document.getElementById('userInput').value
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
+                JFCustomWidget.makeWidgetRequired();
+                msg.valid = true;
+                msg.value = "";
                 return false;
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
                 document.getElementById('houseNumberError').classList.remove('show');
+                JFCustomWidget.makeWidgetNotRequired();
+                msg.valid = false;
+                msg.value = adressValue;
                 return true;
             }
         }
@@ -230,19 +238,8 @@
         });
 
         JFCustomWidget.subscribe("submit", function(){
-            let value = document.getElementById('userInput').value
-            let msg = {};
-            if(validateForm()) {
-                console.log(valid);
-                JFCustomWidget.makeWidgetNotRequired();
-                msg.valid = false;
-                msg.value = value;
-            } else {
-                msg.valid = true;
-                msg.value = "";
-            }
-                // send value to JotForm
-                JFCustomWidget.sendSubmit(msg);
+            // send value to JotForm
+            JFCustomWidget.sendSubmit(msg);
         });
     </script>
 </body>
