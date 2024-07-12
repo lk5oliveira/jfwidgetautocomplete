@@ -243,12 +243,14 @@
             script.src = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places&callback=initAutocomplete";
             script.async = true;
             document.head.appendChild(script);
-        });
+        
 
-        JFCustomWidget.subscribe("submit", function(){
-            // send value to JotForm
-            console.log(msg);
-            JFCustomWidget.sendSubmit(msg);
+            JFCustomWidget.subscribe("submit", function(){
+                // send value to JotForm
+                console.log(response.required);
+                console.log(msg);
+                JFCustomWidget.sendSubmit(msg);
+            });
         });
 
         JFCustomWidget.makeWidgetRequired();
