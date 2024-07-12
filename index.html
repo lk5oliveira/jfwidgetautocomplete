@@ -156,7 +156,10 @@
                 document.getElementById('postalCode').value
             ].filter(value => value.trim() !== '').join(', ');
 
-            document.getElementById('userInput').value = userInput;
+            if (validateForm()) {
+                document.getElementById('userInput').value = userInput;
+                    let value = document.getElementById('userInput').value;
+                }
         }
 
         function validateForm() {
@@ -230,20 +233,11 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                if (validateForm()) {
-                    let value = document.getElementById('userInput').value;
-                    let msg = {
-                        valid: true,
-                        value: value
-                    };
-                    // send value to JotForm
-                    JFCustomWidget.sendSubmit(msg);
-                } else {
-                    JFCustomWidget.sendSubmit({
-                        valid: false,
-                        value: null
-                    });
-                }
+                let msg = {
+                    valid: true,
+                    value: value
+                };
+                JFCustomWidget.sendSubmit(msg);
             });
         });
     </script>
