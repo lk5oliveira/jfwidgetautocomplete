@@ -73,7 +73,10 @@
     </div>
 
     <script>
-        // Initialize the Google Places API
+        // Always subscribe to the ready event and implement widget related code
+        // inside the callback function, it is the best practice while developing widgets
+        JFCustomWidget.subscribe("ready", function(){
+                    // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
@@ -171,10 +174,6 @@
                 return true;
             }
         }
-
-        // Always subscribe to the ready event and implement widget related code
-        // inside the callback function, it is the best practice while developing widgets
-        JFCustomWidget.subscribe("ready", function(){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
 
@@ -230,6 +229,7 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
+                console.log(value);
                 if (validateForm()) {
                     let value = document.getElementById('userInput').value;
                     let msg = {
