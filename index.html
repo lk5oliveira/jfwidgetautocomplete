@@ -74,7 +74,7 @@
 
     <script>
         // Initialize the Google Places API
-        /*function initAutocomplete() {
+       /* function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
                 types: ['address'],
@@ -114,7 +114,7 @@
                 document.getElementById('postalCode').value = '';
         
                 // Fill the form fields with the address components
-               /* place.address_components.forEach(function (component) {
+                place.address_components.forEach(function (component) {
                     const types = component.types;
                     if (types.includes('route')) {
                         document.getElementById('streetName').value = component.long_name;
@@ -145,7 +145,7 @@
         
                 updateUserInput();
             });
-        }
+        }*/
 
         function updateUserInput() {
             const userInput = [
@@ -171,7 +171,7 @@
                 return true;
             }
         }
-*/
+
         // Always subscribe to the ready event and implement widget related code
         // inside the callback function, it is the best practice while developing widgets
         JFCustomWidget.subscribe("ready", function(msg){
