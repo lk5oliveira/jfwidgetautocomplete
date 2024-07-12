@@ -229,7 +229,8 @@
             script.defer = true;
             document.head.appendChild(script);
             
-            JFCustomWidget.subscribe("submit", function(){
+            JFCustomWidget.subscribe("submit", function(msgs){
+                console.log(msgs);
                 if (validateForm()) {
                     console.log('valid');
                     let value = document.getElementById('userInput').value;
