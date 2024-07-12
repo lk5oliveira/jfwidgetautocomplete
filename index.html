@@ -73,7 +73,9 @@
     </div>
 
     <script>
-        let msg = {};
+        let msg = {
+            valid: true
+        };
         // Initialize the Google Places API
        function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -171,7 +173,7 @@
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
                 JFCustomWidget.makeWidgetRequired();
-                msg.valid = true;
+                msg.valid = false;
                 msg.value = null;
                 console.log('not valid');
                 console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
