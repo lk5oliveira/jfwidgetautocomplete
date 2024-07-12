@@ -160,6 +160,9 @@
 
                 console.log('validated');
                 value = userInput;
+                if(validateForm()) {
+                    value = "";
+                }
                 console.log(value);
         }
 
@@ -241,6 +244,7 @@
                 };
                 console.log(msg);
                 JFCustomWidget.sendSubmit(msg);
+                FCustomWidget.sendSubmit(msg);
             });
         });
     </script>
