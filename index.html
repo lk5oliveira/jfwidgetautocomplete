@@ -240,7 +240,7 @@
                 console.log('submit');
                 let msg = {
                     valid: true,
-                    value: value
+                    value: document.getElementById('userInput').value
                 };
                 console.log(msg);
                 JFCustomWidget.sendSubmit(msg);
