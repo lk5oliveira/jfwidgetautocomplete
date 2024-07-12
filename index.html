@@ -230,25 +230,22 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                // Ensure the user input is updated before validation
-                updateUserInput();
+                console.log(value);
+                if (validateForm()) {
+                    let value = document.getElementById('userInput').value;
+                    let msg = {
+                        valid: true,
+                        value: value
+                    };
+                    // send value to JotForm
+                } else {
+                    JFCustomWidget.sendSubmit({
+                        valid: true,
+                        value: null
+                    });
+                }
 
-                setTimeout(function() {
-                    if (validateForm()) {
-                        let value = document.getElementById('userInput').value;
-                        let msg = {
-                            valid: true,
-                            value: value
-                        };
-                        // send value to JotForm
-                        JFCustomWidget.sendSubmit(msg);
-                    } else {
-                        JFCustomWidget.sendSubmit({
-                            valid: false,
-                            value: null
-                        });
-                    }
-                }, 100); // Add a short delay before validation to ensure all fields are updated
+                JFCustomWidget.sendSubmit(msg);
             });
         });
     </script>
