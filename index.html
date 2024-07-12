@@ -147,9 +147,10 @@
             });
         }
 
-        let value = document.getElementById('userInput').value;
+        let value;
 
         function updateUserInput() {
+            value = document.getElementById('userInput').value;
             const userInput = [
                 document.getElementById('streetName').value,
                 document.getElementById('houseNumber').value,
