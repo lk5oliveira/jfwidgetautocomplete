@@ -147,10 +147,7 @@
             });
         }
 
-        let value;
-
         function updateUserInput() {
-            value = document.getElementById('userInput').value;
             const userInput = [
                 document.getElementById('streetName').value,
                 document.getElementById('houseNumber').value,
@@ -159,12 +156,7 @@
                 document.getElementById('postalCode').value
             ].filter(value => value.trim() !== '').join(', ');
 
-                console.log('validated');
-                value = userInput;
-                if(!validateForm()) {
-                    value = "";
-                }
-                console.log(value);
+            document.getElementById('userInput').value = userInput;
         }
 
         function validateForm() {
@@ -185,7 +177,7 @@
         JFCustomWidget.subscribe("ready", function(){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-            
+
             // Function to handle dropdown appearance
             function handleDropdownAppearance() {
                 let dropDown = document.getElementsByClassName('pac-container')[0];
@@ -238,14 +230,20 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                console.log('submit');
-                let msg = {
-                    valid: true,
-                    value: document.getElementById('userInput').value
-                };
-                console.log(msg);
-                JFCustomWidget.sendSubmit(msg);
-                JFCustomWidget.sendSubmit(msg);
+                if (validateForm()) {
+                    let value = document.getElementById('userInput').value;
+                    let msg = {
+                        valid: true,
+                        value: value
+                    };
+                    // send value to JotForm
+                    JFCustomWidget.sendSubmit(msg);
+                } else {
+                    JFCustomWidget.sendSubmit({
+                        valid: false,
+                        value: null
+                    });
+                }
             });
         });
     </script>
