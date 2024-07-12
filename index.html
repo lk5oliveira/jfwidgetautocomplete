@@ -64,8 +64,7 @@
 
     <script>
         JFCustomWidget.subscribe("ready", function(){
-                var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
-                document.getElementById('labelText').innerHTML = label;
+            let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
                     var msg = {
