@@ -81,7 +81,7 @@
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
             console.log(response);
             // Function to handle dropdown appearance
-            function handleDropdownAppearance() {
+            /*function handleDropdownAppearance() {
                 let dropDown = document.getElementsByClassName('pac-container')[0];
                 let observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
@@ -100,7 +100,7 @@
                 });
                 // Start observing changes to the dropdown
                 observer.observe(dropDown, { attributes: true });
-            }
+            }*/
 
             // Add event listener for input on the address field
             document.getElementById('addressInput').addEventListener('input', function() {
