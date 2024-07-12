@@ -240,10 +240,13 @@
                         value: value
                     };
                     // send value to JotForm
+                    console.log(value);
                     JFCustomWidget.sendSubmit(msg);
                     
                     // Add a delay and re-send the submit
                     setTimeout(function() {
+                        console.log(value);
+                        console.log(JFCustomWidget.sendSubmit(msg));
                         JFCustomWidget.sendSubmit(msg);
                     }, 200);
                 } else {
