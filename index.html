@@ -230,7 +230,6 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
-                console.log(value);
                 if (validateForm()) {
                     let value = document.getElementById('userInput').value;
                     let msg = {
@@ -238,14 +237,13 @@
                         value: value
                     };
                     // send value to JotForm
+                    JFCustomWidget.sendSubmit(msg);
                 } else {
                     JFCustomWidget.sendSubmit({
-                        valid: true,
+                        valid: false,
                         value: null
                     });
                 }
-
-                JFCustomWidget.sendSubmit(msg);
             });
         });
     </script>
