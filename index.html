@@ -238,10 +238,6 @@
             JFCustomWidget.subscribe("submit", function(msgs){
                 console.log(msgs);
                 let addressValue = document.getElementById('userInput').value;
-                let msg = {
-                    valid: true,
-                    value: 'test'
-                };
                 console.log('value: ' +  msg.valid);
                 JFCustomWidget.sendSubmit(msg);
             });
