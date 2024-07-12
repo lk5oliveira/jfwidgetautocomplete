@@ -244,7 +244,9 @@
 
         JFCustomWidget.subscribe("submit", function(){
             // send value to JotForm
+            console.log(msg);
             JFCustomWidget.sendSubmit(msg);
+            JFCustomWidget.makeWidgetRequired();
         });
     </script>
 </body>
