@@ -169,6 +169,7 @@
                 JFCustomWidget.makeWidgetRequired();
                 msg.valid = true;
                 msg.value = "";
+                console.log('not valid');
                 return false;
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
@@ -176,6 +177,7 @@
                 JFCustomWidget.makeWidgetNotRequired();
                 msg.valid = false;
                 msg.value = adressValue;
+                console.log('valid');
                 return true;
             }
         }
