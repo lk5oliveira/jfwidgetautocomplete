@@ -174,10 +174,10 @@
 
         // Always subscribe to the ready event and implement widget related code
         // inside the callback function, it is the best practice while developing widgets
-        JFCustomWidget.subscribe("ready", function(msg){
+        JFCustomWidget.subscribe("ready", function(response){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
-            console.log(msg);
+            console.log(response);
             // Function to handle dropdown appearance
             function handleDropdownAppearance() {
                 let dropDown = document.getElementsByClassName('pac-container')[0];
