@@ -233,6 +233,7 @@
             let value = document.getElementById('userInput').value
             let msg = {};
             if(validateForm()) {
+                console.log(valid);
                 JFCustomWidget.makeWidgetNotRequired();
                 msg.valid = false;
                 msg.value = value;
