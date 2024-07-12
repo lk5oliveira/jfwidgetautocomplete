@@ -106,6 +106,8 @@
                     console.error("Selected place is not within the specified bounds of New South Wales.");
                     return;
                 }
+
+                JFCustomWidget.makeWidgetRequired();
         
                 // Clear the form fields
                 document.getElementById('streetName').value = '';
@@ -247,8 +249,9 @@
             // send value to JotForm
             console.log(msg);
             JFCustomWidget.sendSubmit(msg);
-            JFCustomWidget.makeWidgetRequired();
         });
+
+        JFCustomWidget.makeWidgetRequired();
     </script>
 </body>
 </html>
