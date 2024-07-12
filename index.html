@@ -238,7 +238,8 @@
                         value: value
                     };
                     // send value to JotForm
-                    JFCustomWidget.sendData(msg);
+                    JFCustomWidget.sendData(msg.value);
+                    JFCustomWidget.sendSubmit(msg);
                 } else {
                     JFCustomWidget.sendSubmit({
                         valid: false,
