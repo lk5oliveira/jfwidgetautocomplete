@@ -157,8 +157,10 @@
             ].filter(value => value.trim() !== '').join(', ');
 
             if (validateForm()) {
+                console.log('validated');
+                let value = document.getElementById('userInput').value;
                 document.getElementById('userInput').value = userInput;
-                    let value = document.getElementById('userInput').value;
+                console.log(value);
                 }
         }
 
@@ -233,6 +235,7 @@
             document.head.appendChild(script);
             
             JFCustomWidget.subscribe("submit", function(){
+                console.log('submit');
                 let msg = {
                     valid: true,
                     value: value
