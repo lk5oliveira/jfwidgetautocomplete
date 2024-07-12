@@ -1,70 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Address Search</title>
-    <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
-
-    <style>
-        .pac-container::after {
-            display: none !important;
-        }
-
-        #container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        input {
-            padding: 5px 10px;
-        }
-
-        input:read-only {
-            background-color: #f3f3f3;
-        }
-
-        label {
-            margin: 12px 0px 3px 0px;
-        }
-
-        .hidden {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .fade-in {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .error-border {
-            border: 1px solid red;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 12px;
-            display: none;
-        }
-
-        .show {
-            display: block;
-        }
-
-    </style>
-</head>
-<body>
-    <div id="container">
-        <input type="text" id="addressInput" placeholder="Enter your address">
-
-        <input id="userInput" name="userInput" value="test">
-    </div>
-
-    <script>
-        JFCustomWidget.subscribe("ready", function(){
-            let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
+<html>
+    <head>
+        <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+    </head>
+    <body>
+        <div id="main">
+            <h3>This is my first widget.</h3>
+            <span id="labelText"></span>
+            <input type="text" id="userInput">
+        </div>
+        <script type="text/javascript">
+            //always subscribe to ready event and implement widget related code
+            //inside callback function , it is the best practice while developing widgets
+            JFCustomWidget.subscribe("ready", function(){
+                var label = JFCustomWidget.getWidgetSetting('QuestionLabel');
+                document.getElementById('labelText').innerHTML = label;
                 //subscribe to form submit event
                 JFCustomWidget.subscribe("submit", function(){
                     var msg = {
@@ -77,6 +27,6 @@
                     JFCustomWidget.sendSubmit(msg);
                 });
             });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
