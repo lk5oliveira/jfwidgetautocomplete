@@ -171,7 +171,7 @@
                 msg.valid = true;
                 msg.value = "";
                 console.log('not valid');
-                console.log(JFCustomWidget.isWidgetRequired());
+                console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
                 return false;
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
@@ -180,7 +180,7 @@
                 msg.valid = false;
                 msg.value = adressValue;
                 console.log('valid');
-                console.log(JFCustomWidget.isWidgetRequired());
+                console.log('widget is: '+ JFCustomWidget.isWidgetRequired());
                 return true;
             }
         }
