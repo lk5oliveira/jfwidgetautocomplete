@@ -156,6 +156,7 @@
                 document.getElementById('state').value,
                 document.getElementById('postalCode').value
             ].filter(value => value.trim() !== '').join(', ');
+            console.log('address updated');
 
             document.getElementById('userInput').value = userInput;
             validateForm();
@@ -169,7 +170,7 @@
                 document.getElementById('houseNumberError').classList.add('show');
                 JFCustomWidget.makeWidgetRequired();
                 msg.valid = true;
-                msg.value = "";
+                msg.value = null;
                 console.log('not valid');
                 console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
                 return false;
