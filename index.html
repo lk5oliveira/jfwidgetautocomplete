@@ -7,6 +7,9 @@
     <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
 
     <style>
+        body {
+            margin: 0px;
+        }
         .pac-container::after {
             display: none !important;
         }
@@ -18,8 +21,28 @@
         }
 
         input {
-            padding: 5px 10px;
             flex: 1;
+            --rem: 16;
+            list-style: none;
+            box-sizing: border-box;
+            outline: 0;
+            margin: 0;
+            text-align: left;
+            padding: 0 .625em;
+            height: 2.5em;
+            min-height: 2.5em;
+            color: #2c3345;
+            background-color: #fff;
+            font-size: 1em;
+            border-radius: 4px;
+            display: block;
+            font-family: inherit;
+            border: 1px solid #f23a3c;
+            border-width: 1px;
+            border-color: rgb(184, 189, 201);
+            min-width: 100%;
+            max-width: 100%;
+            width: 310px;
         }
 
         input:read-only {
@@ -58,11 +81,13 @@
         #clearButton {
             position: absolute;
             right: 10px;
-            top: 5px;
+            top: 8px;
             background: none;
             border: none;
             font-size: 20px;
             cursor: pointer;
+            background: #ebebeb;
+            border-radius: 50%;
         }
 
     </style>
@@ -157,7 +182,10 @@
                 document.getElementById('postalCodeLabel').classList.add('fade-in');
                 document.getElementById('postalCode').classList.add('fade-in');
 
-                JFCustomWidget.requestFrameResize({ height: 415 });
+
+                let container = document.getElementById('container');
+                let containerHeight = window.getComputedStyle(container).height
+                JFCustomWidget.requestFrameResize({ height: parseInt(containerHeight) +  10 });
 
                 updateUserInput();
             });
