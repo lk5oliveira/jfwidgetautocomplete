@@ -111,11 +111,11 @@
     </div>
 
     <script>
-        // Initialize the Google Places API
         let msg = {
-            value: "",
-            valid: true
-        }
+            valid: true,
+            value: ""
+        };
+        // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
@@ -214,7 +214,7 @@
                 document.getElementById('houseNumberError').classList.add('show');
                 msg.value = "";
                 JFCustomWidget.sendData({
-                    value: -
+                    value: ""
                 });
                 console.log('not valid');
                 console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
@@ -257,7 +257,7 @@
             document.getElementById('houseNumberError').classList.remove('show');
 
             document.getElementById('userInput').value = '';
-            validateForm();
+            valid
         }
 
         document.getElementById('clearButton').addEventListener('click', clearFields);
@@ -322,7 +322,7 @@
         JFCustomWidget.subscribe("submit", function(){
             // send value to JotForm
             console.log("next or submit pressed: " + msg.value);
-            JFCustomWidget.sendSubmit(msg.valid);
+            JFCustomWidget.sendSubmit(msg);
         });
 
     </script>
