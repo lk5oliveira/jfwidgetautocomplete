@@ -323,7 +323,7 @@
 
         JFCustomWidget.subscribe("submit", function(){
             // send value to JotForm
-            console.log("next or submit pressed: " + msg);
+            console.log("next or submit pressed: " + msg.value);
             JFCustomWidget.sendSubmit(msg);
         });
 
