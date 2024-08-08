@@ -212,7 +212,6 @@
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
                 document.getElementById('houseNumberError').classList.remove('show');
-                JFCustomWidget.makeWidgetNotRequired();
                 return true;
             }
         }
@@ -303,10 +302,7 @@
         });
 
         JFCustomWidget.subscribe("submit", function(){
-            let msg = {
-                valid: true,
-                value: document.getElementById('addressInput').value
-            }
+
             console.log("next or submit pressed: " + msg.value);
 
         });
