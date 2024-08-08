@@ -145,8 +145,6 @@
                     return;
                 }
 
-                JFCustomWidget.makeWidgetRequired();
-
                 // Clear the form fields
                 document.getElementById('streetName').value = '';
                 document.getElementById('houseNumber').value = '';
@@ -211,9 +209,6 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
-                JFCustomWidget.makeWidgetRequired();
-                msg.valid = false;
-                msg.value = null;
                 console.log('not valid');
                 console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
                 return false;
@@ -223,6 +218,9 @@
                 JFCustomWidget.makeWidgetNotRequired();
                 msg.valid = true;
                 msg.value = addressValue;
+                JFCustomWidget.sendData({
+                    value: msg
+                });
                 console.log('valid');
                 console.log('widget is: '+ JFCustomWidget.isWidgetRequired());
                 return true;
@@ -253,7 +251,6 @@
 
             document.getElementById('userInput').value = '';
             msg = {};
-            JFCustomWidget.makeWidgetRequired();
         }
 
         document.getElementById('clearButton').addEventListener('click', clearFields);
@@ -290,6 +287,10 @@
             document.getElementById('addressInput').addEventListener('input', function() {
                 // Call function to handle dropdown appearance
                 handleDropdownAppearance();
+                console.log("listening: " + msg);
+                JFCustomWidget.sendData({
+                    value: msg.value
+                });
             });
 
             document.getElementById('houseNumber').addEventListener('input', function() {
@@ -321,7 +322,6 @@
             JFCustomWidget.sendSubmit(msg);
         });
 
-        JFCustomWidget.makeWidgetRequired();
     </script>
 </body>
 </html>
