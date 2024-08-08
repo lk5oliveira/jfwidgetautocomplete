@@ -212,6 +212,10 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
+                msg.value = addressValue;
+                JFCustomWidget.sendData({
+                    value: msg.value
+                });
                 console.log('not valid');
                 console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
                 return false;
@@ -255,7 +259,7 @@
             JFCustomWidget.sendData({
                 value: ""
             });
-            msg = {};
+            msg.value = "";
         }
 
         document.getElementById('clearButton').addEventListener('click', clearFields);
@@ -319,7 +323,7 @@
 
         JFCustomWidget.subscribe("submit", function(){
             // send value to JotForm
-            console.log(msg);
+            console.log("next or submit pressed: " + msg);
             JFCustomWidget.sendSubmit(msg);
         });
 
