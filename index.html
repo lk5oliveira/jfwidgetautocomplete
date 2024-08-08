@@ -111,7 +111,10 @@
     </div>
 
     <script>
-        let msg = {};
+        let msg = {
+            valid: true,
+            value: ""
+        };
         // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -216,10 +219,9 @@
                 document.getElementById('houseNumber').classList.remove('error-border');
                 document.getElementById('houseNumberError').classList.remove('show');
                 JFCustomWidget.makeWidgetNotRequired();
-                msg.valid = true;
                 msg.value = addressValue;
                 JFCustomWidget.sendData({
-                    value: msg
+                    value: msg.value
                 });
                 console.log('valid');
                 console.log('widget is: '+ JFCustomWidget.isWidgetRequired());
@@ -287,10 +289,6 @@
             document.getElementById('addressInput').addEventListener('input', function() {
                 // Call function to handle dropdown appearance
                 handleDropdownAppearance();
-                console.log("listening: " + msg);
-                JFCustomWidget.sendData({
-                    value: msg.value
-                });
             });
 
             document.getElementById('houseNumber').addEventListener('input', function() {
