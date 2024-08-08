@@ -212,7 +212,7 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
-                msg.value = "1";
+                msg.value = "";
                 JFCustomWidget.sendData({
                     value: ""
                 });
@@ -321,7 +321,7 @@
         JFCustomWidget.subscribe("submit", function(){
             // send value to JotForm
             console.log("next or submit pressed: " + msg.value);
-            JFCustomWidget.sendSubmit(msg);
+            JFCustomWidget.sendSubmit(msg.valid);
         });
 
     </script>
