@@ -111,11 +111,6 @@
     </div>
 
     <script>
-        JFCustomWidget.subscribe("ready", function(response){
-        let msg = {
-            valid: true,
-            value: ""
-        };
         // Initialize the Google Places API
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
@@ -213,7 +208,7 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
-                msg.value = "";
+                msg.value = "1";
                 JFCustomWidget.sendData({
                     value: ""
                 });
@@ -264,7 +259,7 @@
 
         // Always subscribe to the ready event and implement widget related code
         // inside the callback function, it is the best practice while developing widgets
-        
+        JFCustomWidget.subscribe("ready", function(response){
             // Define your API key variable here
             let apiKey = JFCustomWidget.getWidgetSetting('apiKey');
             console.log(response);
