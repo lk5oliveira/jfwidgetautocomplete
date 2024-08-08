@@ -112,6 +112,10 @@
 
     <script>
         // Initialize the Google Places API
+        let msg = {
+            value: "",
+            valid: true
+        }
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
