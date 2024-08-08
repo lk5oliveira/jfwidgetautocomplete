@@ -111,11 +111,6 @@
     </div>
 
     <script>
-        // Initialize the Google Places API
-        let msg = {
-            value: "",
-            valid: true
-        }
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
@@ -212,23 +207,12 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
-                msg.value = "";
-                JFCustomWidget.sendData({
-                    value: 1
-                });
                 console.log('not valid');
-                console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
                 return false;
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
                 document.getElementById('houseNumberError').classList.remove('show');
                 JFCustomWidget.makeWidgetNotRequired();
-                msg.value = 1;
-                JFCustomWidget.sendData({
-                    value:1
-                });
-                console.log('valid');
-                console.log('widget is: '+ JFCustomWidget.isWidgetRequired());
                 return true;
             }
         }
@@ -319,7 +303,10 @@
         });
 
         JFCustomWidget.subscribe("submit", function(){
-            // send value to JotForm
+            let msg = {
+                valid: true,
+                value: document.getElementById('addressInput').value
+            }
             console.log("next or submit pressed: " + msg.value);
             JFCustomWidget.sendSubmit(msg);
         });
