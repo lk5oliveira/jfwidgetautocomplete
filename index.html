@@ -111,6 +111,11 @@
     </div>
 
     <script>
+        // Initialize the Google Places API
+        let msg = {
+            value: "",
+            valid: true
+        }
         function initAutocomplete() {
             const input = document.getElementById('addressInput');
             const options = {
@@ -207,11 +212,24 @@
             if (!houseNumber) {
                 document.getElementById('houseNumber').classList.add('error-border');
                 document.getElementById('houseNumberError').classList.add('show');
+                msg.value = "";
+                JFCustomWidget.sendData({
+                    value: -
+                });
                 console.log('not valid');
+                console.log('widget is: ' + JFCustomWidget.isWidgetRequired());
+                JFCustomWidget.makeWidgetRequired();
                 return false;
             } else {
                 document.getElementById('houseNumber').classList.remove('error-border');
                 document.getElementById('houseNumberError').classList.remove('show');
+                JFCustomWidget.makeWidgetNotRequired();
+                msg.value = addressValue;
+                JFCustomWidget.sendData({
+                    value: msg.value
+                });
+                console.log('valid');
+                console.log('widget is: '+ JFCustomWidget.isWidgetRequired());
                 return true;
             }
         }
@@ -302,14 +320,9 @@
         });
 
         JFCustomWidget.subscribe("submit", function(){
-            JFCustomWidget.sendData(addressValue = document.getElementById('userInput').value);
-            let msg = {
-                valid: true,
-                value: addressValue = document.getElementById('userInput').value
-            }
-            if(addressValue = document.getElementById('userInput').value != "") {
-                JFCustomWidget.sendSubmit(msg);
-            }
+            // send value to JotForm
+            console.log("next or submit pressed: " + msg.value);
+            JFCustomWidget.sendSubmit(msg.valid);
         });
 
     </script>
