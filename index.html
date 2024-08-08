@@ -303,6 +303,13 @@
 
         JFCustomWidget.subscribe("submit", function(){
             JFCustomWidget.sendData(addressValue = document.getElementById('userInput').value);
+            let msg = {
+                valid: true,
+                value: addressValue = document.getElementById('userInput').value
+            }
+            if(addressValue = document.getElementById('userInput').value != "") {
+                JFCustomWidget.sendSubmit(msg);
+            }
         });
 
     </script>
