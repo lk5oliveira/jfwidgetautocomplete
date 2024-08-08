@@ -252,6 +252,9 @@
             document.getElementById('houseNumberError').classList.remove('show');
 
             document.getElementById('userInput').value = '';
+            JFCustomWidget.sendData({
+                value: msg.value
+            });
             msg = {};
         }
 
